@@ -14,4 +14,5 @@ to later integrate real-time sensor data (e.g., Arduino).
 ## Technologies
 - Python
 - GitHub
+- Arduino
 
