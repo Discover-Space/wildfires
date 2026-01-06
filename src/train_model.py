@@ -3,7 +3,7 @@ import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 
-df = pd.read_csv("data/simulated_wildfire_data.csv")
+df = pd.read_csv("data/wildfire_data.csv")
 
 X = df[["temperature", "humidity", "wind", "smoke"]]
 y = df["fire"]
