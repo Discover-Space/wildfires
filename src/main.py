@@ -1,14 +1,9 @@
-from predict import predict_risk
+from predict import predict_fire
 
-sample_data = [
+samples = [
     (38, 22, 18, 410),
-    (32, 45, 10, 180),
-    (27, 55, 5, 90)
+    (28, 55, 8, 120)
 ]
 
-for t, h, w, s in sample_data:
-    risk = predict_risk(t, h, w, s)
-    print(f"T={t}°C H={h}% W={w} S={s} → {risk}")
-
-
-
+for s in samples:
+    print(s, predict_fire(*s))
