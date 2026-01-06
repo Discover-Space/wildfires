@@ -1,9 +1,7 @@
+import joblib
 
-def predict_risk(temp, humidity, wind, smoke):
-    if temp > 35 and humidity < 30 and smoke > 300:
-        return "🔥 HIGH RISK"
-    elif temp > 30 and humidity < 40:
-        return "⚠️ MEDIUM RISK"
-    else:
-        return "✅ LOW RISK"
+model = joblib.load("models/fire_model.pkl")
 
+def predict_fire(temp, humidity, wind, smoke):
+    prediction = model.predict([[temp, humidity, wind, smoke]])[0]
+    return "🔥 HIGH RISK" if prediction == 1 else "✅ LOW RISK"
