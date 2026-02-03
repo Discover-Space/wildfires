@@ -1,47 +1,20 @@
-import serial
-import time
+import pandas as pd
 from predict import predict_fire
 
-# ===== Configure Arduino serial =====
-arduino_port = "COM3"  # <-- change to your Arduino port
-baud_rate = 9600
+# Read CSV data
+df = pd.read_csv("data/simulated_wildfire_data.csv")
+df = pd.read_csv("data/wildfire_data.csv")
 
-ser = serial.Serial(arduino_port, baud_rate, timeout=1)
-time.sleep(2)  # wait for Arduino to reset
+# Use only the input columns (ignore the label)
+for i, row in df.head(10).iterrows():  # first 10 rows
+    temp = row["temperature"]
+    humidity = row["humidity"]
+    wind = row["wind"]
+    smoke = row["smoke"]
 
-print("Reading live values from Arduino dials...")
+    risk = predict_fire(temp, humidity, wind, smoke)
 
-while True:
-    try:
-        line = ser.readline().decode('utf-8').strip()
-        if not line:
-            continue
-
-        # Arduino prints: "Dial 1: 512 | Dial 2: 300 | Dial 3: 1023 | Dial 4: 100"
-        parts = line.split('|')
-        values = [int(p.split(':')[1]) for p in parts]
-
-        dial1, dial2, dial3, dial4 = values
-
-        # Map dial values to wildfire parameters
-        temperature = 20 + (dial1 / 1023) * 25   # 20–45°C
-        humidity = 10 + (dial2 / 1023) * 60      # 10–70%
-        wind = (dial3 / 1023) * 30               # 0–30
-        smoke = 50 + int((dial4 / 1023) * 450)   # 50–500
-
-        # Predict fire risk
-        risk = predict_fire(temperature, humidity, wind, smoke)
-
-        # Print nicely
-        print(
-            f"T={temperature:.1f}°C | H={humidity:.1f}% | "
-            f"W={wind:.1f} | S={smoke} → {risk}"
-        )
-
-        time.sleep(0.1)  # small delay to avoid flooding
-
-    except KeyboardInterrupt:
-        print("Stopping...")
-        break
-    except Exception as e:
-        print("Error:", e)
+    print(
+        f"T={temp:.1f}°C | H={humidity:.1f}% | "
+        f"W={wind:.1f} | S={smoke} → {risk}"
+    )
