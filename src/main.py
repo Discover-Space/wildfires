@@ -2,7 +2,7 @@ import pandas as pd
 from predict import predict_fire
 
 # Read CSV data
-df = pd.read_csv("data/simulated_wildfire_data.csv")
+df = pd.read_csv("data/wildfire_data.csv")
 df = pd.read_csv("data/wildfire_data.csv")
 
 # Use only the input columns (ignore the label)
