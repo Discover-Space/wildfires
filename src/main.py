@@ -6,7 +6,7 @@ df = pd.read_csv("data/wildfire_data.csv")
 df = pd.read_csv("data/wildfire_data.csv")
 
 # Use only the input columns (ignore the label)
-for i, row in df.head(30).iterrows():  # first 10 rows
+for i, row in df.head(20, 30).iterrows():  # first 10 rows
     temp = row["temperature"]
     humidity = row["humidity"]
     wind = row["wind"]
